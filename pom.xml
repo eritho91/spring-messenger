@@ -29,6 +29,12 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/eritho91/spring-messenger</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
