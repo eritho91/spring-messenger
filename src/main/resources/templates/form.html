@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<div th:if="${success}">
+    <p th:text="${success}"></p>
+</div>
+
+<form th:action="@{/email}" th:object="${email}" method="post">
+
+    <input th:field="*{recipient}" type="text" placeholder="mottagare"/>
+    <input th:field="*{subject}" type="text" placeholder="ämne"/>
+    <input th:field="*{message}" type="text" placeholder="meddelande"/>
+
+    <button type="submit">Skicka</button>
+
+</form>
 </body>
 </html>
