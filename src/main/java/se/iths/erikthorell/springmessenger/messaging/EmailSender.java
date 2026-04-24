@@ -1,4 +1,5 @@
 package se.iths.erikthorell.springmessenger.messaging;
+
 import jakarta.mail.Authenticator;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
@@ -13,15 +14,19 @@ import java.util.Properties;
 
 @Component("email")
 public class EmailSender implements Messenger {
-    private final String FROM = System.getenv("MAIL_USERNAME");
-    private final String APP_PASSWORD = System.getenv("MAIL_PASSWORD");
-
 
     @Override
     public void send(Message message) {
         if (!(message instanceof Email email)) {
             throw new IllegalArgumentException("Fel typ av meddelande");
         }
+
+        String from = System.getenv("MAIL_USERNAME");
+        String appPassword = System.getenv("MAIL_PASSWORD");
+
+        System.out.println("MAIL_USERNAME = " + from);
+        System.out.println("MAIL_PASSWORD finns = " + (appPassword != null));
+
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -31,23 +36,26 @@ public class EmailSender implements Messenger {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(FROM, APP_PASSWORD);
+                return new PasswordAuthentication(from, appPassword);
             }
         });
+
         try {
             MimeMessage mimeMessage = new MimeMessage(session);
-            mimeMessage.setFrom(new InternetAddress(FROM));
-            mimeMessage.setRecipient(jakarta.mail.Message.RecipientType.TO,
-                    new InternetAddress(email.getRecipient()));
+            mimeMessage.setFrom(new InternetAddress(from));
+            mimeMessage.setRecipient(
+                    jakarta.mail.Message.RecipientType.TO,
+                    new InternetAddress(email.getRecipient())
+            );
 
             mimeMessage.setSubject(email.getSubject());
             mimeMessage.setText(email.getMessage());
+
             Transport.send(mimeMessage);
 
             System.out.println("Mail sent");
         } catch (Exception e) {
-            System.out.println("Error sending message: " + e.getMessage());
+            e.printStackTrace();
         }
-
     }
 }
