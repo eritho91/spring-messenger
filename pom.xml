@@ -10,7 +10,7 @@
     </parent>
     <groupId>se.iths.erikthorell</groupId>
     <artifactId>spring-messenger</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>spring-messenger</name>
     <description>spring-messenger</description>
     <url/>
