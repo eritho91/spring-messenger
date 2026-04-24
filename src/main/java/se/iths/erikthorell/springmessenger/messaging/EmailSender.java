@@ -13,7 +13,7 @@ import java.util.Properties;
 
 @Component("email")
 public class EmailSender implements Messenger {
-    private final String FROM = System.getenv("MAIL_ACCOUNT");
+    private final String FROM = System.getenv("MAIL_USERNAME");
     private final String APP_PASSWORD = System.getenv("MAIL_PASSWORD");
 
 
